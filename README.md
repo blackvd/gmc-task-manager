@@ -1,6 +1,6 @@
 ## Description
 
-Task Manger App created with [React](https://github.com/facebook/react/releases)
+Task Manager App created with [React](https://react.dev/)
 
 ## Project setup
 
