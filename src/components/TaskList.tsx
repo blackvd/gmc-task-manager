@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import type { Task } from "../models/task";
 import TaskItem from "./TaskItem";
 import TaskForm from "./TaskForm";
+import EmptyTasks from "./EmptyTasks";
 
 type TaskListProps = {
   tasks: Task[];
@@ -9,9 +10,13 @@ type TaskListProps = {
   toggleTask: (id: string) => void;
 };
 
-export default function TaskList({ tasks, onDelete, toggleTask }: TaskListProps) {
+export default function TaskList({
+  tasks,
+  onDelete,
+  toggleTask,
+}: TaskListProps) {
   const [openModel, setOpenModal] = useState(false);
-  const [ selectedTask, setSelectedTask ]= useState<Task | null>(null);
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
   const onSubmit = (task) => {
     console.log(task);
@@ -24,15 +29,19 @@ export default function TaskList({ tasks, onDelete, toggleTask }: TaskListProps)
 
   return (
     <div className="flex flex-col gap-3 p-4">
-      {tasks.map((task) => (
-        <TaskItem
-          key={task.id}
-          task={task}
-          onEdit={() => editTask(task)}
-          onDelete={() => onDelete(task.id)}
-          toggleTask={() => toggleTask(task.id)}
-        />
-      ))}
+      {tasks.length === 0 ? (
+        <EmptyTasks />
+      ) : (
+        tasks.map((task) => (
+          <TaskItem
+            key={task.id}
+            task={task}
+            onEdit={() => editTask(task)}
+            onDelete={() => onDelete(task.id)}
+            toggleTask={() => toggleTask(task.id)}
+          />
+        ))
+      )}
 
       <TaskForm
         isOpen={openModel}
@@ -40,10 +49,10 @@ export default function TaskList({ tasks, onDelete, toggleTask }: TaskListProps)
         onClose={() => setOpenModal(false)}
         onSubmit={onSubmit}
         initialValues={{
-            title: selectedTask?.title,
-            description: selectedTask?.description,
-            priority: selectedTask?.priority,
-            dueDate: selectedTask?.dueDate
+          title: selectedTask?.title,
+          description: selectedTask?.description,
+          priority: selectedTask?.priority,
+          dueDate: selectedTask?.dueDate,
         }}
       />
     </div>
