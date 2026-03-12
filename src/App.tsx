@@ -6,6 +6,7 @@ import type { Task } from "./models/task";
 import TaskList from "./components/TaskList";
 import SearchBar from "./components/SearchBar";
 import FilterBar from "./components/FilterBar";
+import Summary from "./components/Summary";
 
 const TASKS_STORAGE_KEY = "tasks";
 
@@ -150,7 +151,18 @@ function App() {
             Add New Task
           </button>
         </div>
-        <SearchBar onSearch={handleSearch} />
+
+        <Summary
+          totalTasks={filteredTasks.length}
+          completed={
+            filteredTasks.filter((task) => task.completed === true).length
+          }
+          pending={
+            filteredTasks.filter((task) => task.completed === false).length
+          }
+        />
+        {filteredTasks.length > 0 && <SearchBar onSearch={handleSearch} />}
+
         <FilterBar
           onStatusChange={(value) =>
             setFilters((prev) => ({ ...prev, status: value }))
